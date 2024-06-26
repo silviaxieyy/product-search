@@ -1,107 +1,116 @@
 import Product from "./Product";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import productsData from "./data/productData.json";
 
 const ProductList = () => {
-  const [productState, setProductState] = useState({
-    isAllProducts: true,
-    isShirts: false,
-    isPantsnSkirts: false,
-    isJackets: false
-  });  
-
+  const [productState, setProductState] = useState("All Products");  
   const [searchItem, setSearchItem] = useState("");
-
   const [selectSortedby, setSelectSorteby] = useState("");
-
-  const handleInputChange = (event) => {
-    setSearchItem(event.target.value);
-  }
+  const [displayProducts, setDisplayProducts] = useState(productsData)
   
-  const searchProducts = () => {
-    const filterSearchProducts = productsData.filter((product) => {
+ 
+  useEffect(() => {
+    let filteredProducts = productsData
+
+    if (searchItem.trim() !== '') {
+      filteredProducts = productsData.filter((product) => {
       const productNameMatch = product.name.toLowerCase().includes(searchItem.toLowerCase());
       const productsDescriptionMatch = product.description.toLocaleLowerCase().includes(searchItem.toLowerCase());
       return productNameMatch || productsDescriptionMatch;
-    });
-    return filterSearchProducts;
-  }
+      })
+    }
+
+    if (productState !== "All Products") { 
+      filteredProducts = filteredProducts.filter((product) => {
+        if (productState === 'Shirts') return product.category === 'shirts';
+        if(productState === 'Pants and Shirts') return product.category === 'pants' || product.category === 'skirts';
+        if(productState === 'Jackets') return product.category ===  'jackets';
+        return false;
+      })
+    }
+
+      if (selectSortedby === "lowToHigh") {
+        filteredProducts.sort((a,b) => a.price - b.price);
+      } else if (selectSortedby === "highToLow") {
+        filteredProducts.sort((a,b) => b.price - a.price)
+      }
+
+      setDisplayProducts(filteredProducts)
+
+  }, [searchItem, productState, selectSortedby])
+
+
+
 
   const handleButtonClick = (productType) => {
-    console.log("click product category: " , productType);
+    setProductState(productType)
     setSearchItem("");
-    setProductState((prev) => ({
-      ...prev,
-      isAllProducts: productType==='isAllProducts',
-      isShirts: productType==='isShirts',
-      isPantsnSkirts:  productType==='isPantsnSkirts',
-      isJackets: productType==='isJackets'
-    }))
+    setSelectSorteby("")
   }
 
   const handleSortedChange = (event) => {
-    setSearchItem("");
     setSelectSorteby(event.target.value);
   }
   
-  const sortedProducts = () => {
-    let sorted = [...productsData];
-    if (selectSortedby === "lowToHigh") {
-      sorted.sort((a,b) => a.price - b.price);
-    } else if (selectSortedby === "highToLow") {
-        sorted.sort((a,b) => b.price - a.price)
-    } 
-    return sorted;
-  }
-
-  const filteredProducts = sortedProducts().filter((product) => {
-    if (productState.isAllProducts) return true;
-    if (productState.isShirts) return product.category === 'shirts';
-    if(productState.isPantsnSkirts) return product.category === 'pants' || product.category === 'skirts';
-    if(productState.isJackets) return product.category ===  'jackets';
-    return false;
-  })
 
   return (
     <>
       <h1>Amy's clothing store</h1>
-      <h2>You can buy everything you need to wear.</h2>
-      <div className="filter-menu">
-        <h2 style={{padding: '15px'}}>Filter</h2>
-        <input value={searchItem} onChange={handleInputChange} placeholder="search for a product" />
-        <button onClick={() => handleButtonClick('isAllProducts')}>All products</button>
-        <button onClick={() => handleButtonClick('isShirts')}>Shirts</button>
-        <button onClick={() => handleButtonClick('isPantsnSkirts')}>Pants and Skirts</button>
-        <button onClick={() => handleButtonClick('isJackets')}>Jackets</button>
-        <select id="Sorted" value={selectSortedby} onChange={handleSortedChange}>
-          <option value="" selected>Sorted by:</option>
+      <h3 className="text-center text-gray-600">You can buy everything you need to wear.</h3>
+      <div className="filter-menu my-4 flex flex-rows flex-wrap">
+        <h2 className="h-14 p-2 m-2">Filter</h2>
+        <input
+          className="h-14 p-2 m-2 border-2 border-gray-400 hover:border-blue-600" 
+          value={searchItem} 
+          onChange={(e) => setSearchItem(e.target.value)} 
+          placeholder="search for a product" 
+        />
+        <button
+          className="text-nowrap h-14 p-2 m-2 hover:bg-blue-600 border-2 border-gray-500 hover:border-blue-600 rounded-2xl" 
+          onClick={() => handleButtonClick('All Products')}
+        >
+          All products
+        </button>
+        <button
+          className="text-nowrap h-14 p-2 m-2 border-2 border-gray-500 hover:border-blue-600 rounded-2xl" 
+          onClick={() => handleButtonClick('Shirts')}
+        >
+          Shirts
+        </button>
+        <button
+          className="text-nowrap h-14 p-2 m-2 border-2 border-gray-500 hover:border-blue-600 rounded-2xl"  
+          onClick={() => handleButtonClick('Pants and Shirts')}
+        >
+          Pants and Skirts
+        </button>
+        <button
+          className="text-nowrap h-14 p-2 m-2 border-2 border-gray-500 hover:border-blue-600 rounded-2xl"  
+          onClick={() => handleButtonClick('Jackets')}
+        >
+          Jackets
+        </button>
+        <select 
+          id="Sorted" 
+          value={selectSortedby} 
+          onChange={handleSortedChange}
+          className="h-14 m-2 border-2 border-gray-400 hover:border-blue-600"
+        >
+          <option value="" disabled>Sort by price:</option>
           <option value="lowToHigh">Price: Low to High</option>
           <option value="highToLow">Price: High to Low</option>
         </select>
       </div>
-          Your are search for: {searchItem}
+          <h5 className="px-4 m-2 px-2">You are search for:  <strong> {searchItem || productState}</strong></h5> 
       <div className="products-list">
-        {(searchItem === "" ) ? (
-          filteredProducts.map((product,index) => (
-            <Product 
-              key={index} 
-              name={product.name} 
-              price={product.price} 
-              pic={product.pic}
-              description={product.description} 
-              />
-         )))
-         : (
-          searchProducts().map((product, index) => (
-            <Product 
-              key={index} 
-              name={product.name} 
-              price={product.price} 
-              pic={product.pic}
-              description={product.description} 
-            />
-          ))
-        )}
+        {displayProducts?.map((product, index) => (
+          <Product 
+            key={index}
+            name={product.name}
+            price={product.price}
+            pic={product.pic}
+            description={product.description}
+          />
+        ))}
       </div>
     </>
   ) 

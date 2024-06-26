@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.yarn/unplugged/core-js-*/node_modules/core-js/**
+.yarn/unplugged/@next-swc-darwin-arm64-npm-14.1.0-6d433a23a7/node_modules/@next/swc-darwin-arm64/**
+.yarn/unplugged/fsevents-patch-6b67494872/node_modules/fsevents/**
+.yarn/unplugged/node-gyp-npm-10.1.0-bdea7d2ece/node_modules/node-gyp/**
+.yarn/unplugged/varname-npm-2.0.3-6ebb262119/node_modules/varname/**
+.pnp.cjs
+.pnp.loader.mjs

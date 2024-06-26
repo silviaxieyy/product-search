@@ -2,30 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  font-size: 24px;
-}
 
 @layer utilities {
   .text-balance {
@@ -60,21 +37,21 @@ select {
   border-radius: 10px;
 }
 
-button {
+/* button {
   border: 1px solid #0067bb;
   background-color: #0067bb;
   border-radius: 10px;
   color: white;
   margin: 10px;
-  padding: 5px 10px 5px 10px;
-}
+  padding: 3px 10px 3px 10px;
+} */
 
-button:hover {
+/* button:hover {
   border: 1px solid #00bb54;
   background-color: #00bb54;
   color: white;
   margin: 10px;
-}
+} */
 
 .filter-menu {
   display: flex;
