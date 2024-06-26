@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+h1 {
+  font-size: 36px;
+  text-align: center;
+  font-family: sans-serif;
+  margin: 20px 10px 10px 10px;
+}
+
+h2 {
+  font-size: 30px;
+  text-align: center;
+  margin: 5px;
+}
+
+input {
+  height: 60px;
+  margin: 10px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+}
+
+select {
+  height: 60px;
+  margin: 10px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+}
+
+/* button {
+  border: 1px solid #0067bb;
+  background-color: #0067bb;
+  border-radius: 10px;
+  color: white;
+  margin: 10px;
+  padding: 3px 10px 3px 10px;
+} */
+
+/* button:hover {
+  border: 1px solid #00bb54;
+  background-color: #00bb54;
+  color: white;
+  margin: 10px;
+} */
+
+.filter-menu {
+  display: flex;
+  align-Items: 'center';
+}
+
+.products-list {
+  margin: 30px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.product-descriptions {
+  margin: 30px;
+  padding: 5px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-description {
+  width: 450px;
+  margin: 10px;
+}
+
+img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+}
